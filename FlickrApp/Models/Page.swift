@@ -1,0 +1,13 @@
+//
+//  Page.swift
+//  FlickrApp
+//
+//  Created by Ivan Makarov on 23.05.2022.
+//
+
+import Foundation
+
+struct Page {
+    var pageNumber = 1
+    let itemsCount = 20
+}
