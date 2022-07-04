@@ -133,7 +133,7 @@ extension ImagesListView: UISearchBarDelegate {
 }
 
 extension ImagesListView: Configurable {
-    struct ViewModel {
+    struct ViewModel: Equatable {
         let searchText: String
         var images: [ImageCell.ViewModel]
     }

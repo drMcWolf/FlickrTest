@@ -8,7 +8,7 @@
 import Foundation
 
 protocol ImagesListInput {
-    func apply(searchItem: SearchItem)
+    func apply(searchItem: SearchItemProtocol)
 }
 
 protocol ImagesListOutput {
@@ -101,12 +101,12 @@ extension ImagesListInteractor: ImagesListBusinessLogic {
     }
     
     func onSearchHistory() {
-        output.handle(output: .seatchHistory(storage))
+        output.handle(output: .searchHistory(storage))
     }
 }
 
 extension ImagesListInteractor: ImagesListInput {
-    func apply(searchItem: SearchItem) {
+    func apply(searchItem: SearchItemProtocol) {
         obtainImagesList(request: .init(searchText: searchItem.text ?? ""))
     }
 }

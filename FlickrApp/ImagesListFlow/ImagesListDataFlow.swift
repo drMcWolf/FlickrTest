@@ -8,12 +8,23 @@
 import Foundation
 
 enum ImagesList {
-    enum Output {
-        case seatchHistory(ImagesListStorageProtocol)
+    enum Output: Equatable {
+        case searchHistory(ImagesListStorageProtocol)
         case errorAlert(String)
+        
+        static func == (lhs: ImagesList.Output, rhs: ImagesList.Output) -> Bool {
+            switch (lhs, rhs) {
+            case (.searchHistory, .searchHistory):
+                return true
+            case let (.errorAlert(lMessage), .errorAlert(rMessage)):
+                return lMessage == rMessage
+            default:
+                return false
+            }
+        }
     }
     
-    struct Request {
+    struct Request: Equatable {
         let searchText: String
     }
     
@@ -23,7 +34,7 @@ enum ImagesList {
             let images: [FlickrImage]
         }
         
-        struct Image {
+        struct Image: Equatable {
             let index: Int
             let imageModel: FlickrImage
         }

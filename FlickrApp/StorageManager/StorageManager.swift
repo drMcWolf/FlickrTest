@@ -1,23 +1,14 @@
-//
-//  StorageManager.swift
-//  FlickrApp
-//
-//  Created by Ivan Makarov on 24.05.2022.
-//
-
 import CoreData
-import Foundation
 
 protocol StorageManagerProtocol {
-    func fetch() -> [SearchItem]
-    func saveSearch(text: String)
+    func insert<T: NSManagedObject>(new object: T.Type) -> T?
+    func find<T: NSManagedObject>(type: T.Type, sortDescriptors: [NSSortDescriptor]) -> [T] 
+    func saveContext ()
 }
 
 final class StorageManager {
     // MARK: - Core Data stack
-    private var context: NSManagedObjectContext {
-        persistentContainer.viewContext
-    }
+
     private lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Flickr")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
@@ -27,43 +18,37 @@ final class StorageManager {
         })
         return container
     }()
-
-    // MARK: - Core Data Saving support
-
-    private func save() {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
-        }
-    }
 }
 
+// MARK: - StorageManagerProtocol
+
 extension StorageManager: StorageManagerProtocol {
-    func fetch() -> [SearchItem] {
-        let request = SearchItem.fetchRequest()
-        request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
-        do {
-            let result = try context.fetch(request)
-            return result 
-        }catch {
-            return []
+    func saveContext () {
+        let context = persistentContainer.viewContext
+        if context.hasChanges {
+            try? context.save()
         }
     }
     
-    func saveSearch(text: String) {
-        let entity = NSEntityDescription.entity(forEntityName: "SearchItem",
-                                     in: context)!
+    func insert<T: NSManagedObject>(new object: T.Type) -> T? {
+        let context = persistentContainer.viewContext
+        if let entityDescriptor = NSEntityDescription.entity(forEntityName: String(describing: T.self), in: context) {
+            let entity = NSManagedObject(entity: entityDescriptor, insertInto: context) as? T
+            return entity
+        }
+        return nil
+    }
+    
+    func find<T: NSManagedObject>(type: T.Type, sortDescriptors: [NSSortDescriptor]) -> [T] {
+        let context = persistentContainer.viewContext
+        let request = T.fetchRequest()
+        request.sortDescriptors = sortDescriptors
         
-        let item = NSManagedObject(entity: entity,
-                                     insertInto: context) as? SearchItem
-        item?.date = Date()
-        item?.text = text
-        
-        save()
+        do {
+            let result = try context.fetch(request)
+            return result as? [T] ?? []
+        }catch {
+            return []
+        }
     }
 }

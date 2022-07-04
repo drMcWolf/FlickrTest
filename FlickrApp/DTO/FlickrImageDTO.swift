@@ -8,15 +8,15 @@
 import Foundation
 import UIKit
 
-struct FlickrImagesSearchResponseDTO: Decodable {
+public struct FlickrImagesSearchResponseDTO: Decodable, Equatable {
     let photos: FlickrImageSearchDTO
 }
 
-struct FlickrImageSearchDTO: Decodable {
+public struct FlickrImageSearchDTO: Decodable, Equatable {
     let photo: [FlickrImageDTO]
 }
 
-struct FlickrImageDTO: Decodable {
+public struct FlickrImageDTO: Decodable, Equatable {
     let id: String
     let secret: String
     let server: String

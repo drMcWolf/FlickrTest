@@ -72,7 +72,7 @@ extension SearchHistoryView: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension SearchHistoryView: Configurable {
-    struct ViewModel {
+    struct ViewModel: Equatable {
         let items: [UITableViewCell.ViewModel]
     }
     
@@ -83,7 +83,7 @@ extension SearchHistoryView: Configurable {
 }
 
 extension UITableViewCell: Configurable {
-    struct ViewModel {
+    struct ViewModel: Equatable {
         let title: String
         let details: String
     }

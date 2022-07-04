@@ -12,7 +12,7 @@ protocol ImagesListStorageProtocol: AnyObject {
     var searchText: String { get set }
     var images: [FlickrImage] { get set }
     func save(searchText: String)
-    func fetchSearchHistory() -> [SearchItem]
+    func fetchSearchHistory() -> [SearchItemProtocol]
 }
 
 final class ImagesListStorage: ImagesListStorageProtocol {
@@ -26,10 +26,12 @@ final class ImagesListStorage: ImagesListStorageProtocol {
     }
     
     func save(searchText: String) {
-        storageManager.saveSearch(text: searchText)
+        let newItem = storageManager.insert(new: SearchItem.self)
+        newItem?.date = Date()
+        newItem?.text = searchText
     }
     
-    func fetchSearchHistory() -> [SearchItem] {
-        return storageManager.fetch()
+    func fetchSearchHistory() -> [SearchItemProtocol] {
+        return storageManager.find(type: SearchItem.self, sortDescriptors: [NSSortDescriptor(key: "date", ascending: false)])
     }
 }

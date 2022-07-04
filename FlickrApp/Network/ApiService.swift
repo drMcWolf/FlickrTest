@@ -1,7 +1,7 @@
 import CoreLocation
 import UIKit
 
-protocol ApiServiceProtocol {
+public protocol ApiServiceProtocol {
     func getPictures(searchText: String, page: Page, completion: @escaping (Result<FlickrImageSearchDTO, Error>) -> Void)
     func downloadPicture(for id: String, completion: @escaping (Result<UIImage, Error>) -> Void)
 }

@@ -50,7 +50,7 @@ extension ApplicationFlowCoordinator: ImagesListOutput {
         switch output {
         case let .errorAlert(message):
             showErrorAlert(message: message)
-        case let .seatchHistory(storage):
+        case let .searchHistory(storage):
             showSearchHistory(storage: storage)
         }
     }

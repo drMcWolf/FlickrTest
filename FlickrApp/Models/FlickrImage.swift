@@ -22,6 +22,6 @@ class FlickrImage {
 
 extension FlickrImage: Equatable {
     static func == (lhs: FlickrImage, rhs: FlickrImage) -> Bool {
-        lhs.id == rhs.id && lhs.server == rhs.server && lhs.secret == rhs.secret
+        lhs.id == rhs.id && lhs.server == rhs.server && lhs.secret == rhs.secret && lhs.image == rhs.image
     }
 }

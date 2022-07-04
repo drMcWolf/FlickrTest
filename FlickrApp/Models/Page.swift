@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Page {
+public struct Page: Equatable {
     var pageNumber = 1
     let itemsCount = 20
 }

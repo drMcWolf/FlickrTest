@@ -66,7 +66,7 @@ private extension ImageCell {
 
 
 extension ImageCell: Configurable {
-    struct ViewModel {
+    struct ViewModel: Equatable {
         let image: UIImage?
     }
     
